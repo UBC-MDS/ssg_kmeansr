@@ -47,4 +47,4 @@ Similar packages:
 - [kmeans in the stats package](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kmeans.html)
 - [flexclust](https://cran.r-project.org/web/packages/flexclust/flexclust.pdf)
 
-`ssg_kmeansr` is intended to help understand the fundamentals of k-means and variants. Contributors are encouraged to build advacned features on top of this base k-means package.
+`ssg_kmeansr` is intended to help understand the fundamentals of k-means and variants. Contributors are encouraged to build advanced features on top of this base k-means package.
