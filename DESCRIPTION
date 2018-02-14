@@ -2,9 +2,9 @@ Package: ssg_kmeansr
 Title: An R package for k-means clustering
 Version: 1.0
 Authors@R: c(
-  person("Susan", "Fung", email = "andrewlim90@gmail.com", role = c("aut", "cre"s),
-  person("Sophia", "Wang", email = "andrewlim90@gmail.com", role = c("aut", "cre"s),
-  person("Guanchen", "Zhang", email = "andrewlim90@gmail.com", role = c("aut", "cre"s)
+  person("Susan", "Fung", email = "susanfung2018@alumni.ubc.ca", role = c("aut", "cre"s),
+  person("Sophia", "Wang", email = "xiaosophiameng@alumni.ubc.ca", role = c("aut", "cre"s),
+  person("Guanchen", "Zhang", email = "Guanchen.zhang@alumni.ubc.ca", role = c("aut", "cre"s)
   )
 Description: This package implements the classical unsupervised clustering method, k-means,
   with options for choosing the initial centroids (e.g. random and kmeans++). Users will be able to
