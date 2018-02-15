@@ -1,4 +1,4 @@
-# ssg_kmeansr
+# ssgkmeansr
 
 An R package for k-means clustering.
 
@@ -8,7 +8,7 @@ Sophia Wang, Susan Fung, Guanchen Zhang
 
 ## Description
 
-This is the repository for the R version of the `ssg_kmeansr` package. The Python version is available [here](https://github.com/UBC-MDS/ssg_pymeans).
+This is the repository for the R version of the `ssgkmeansr` package. The Python version is available [here](https://github.com/UBC-MDS/ssg_pymeans).
 
 This package implements the classical unsupervised clustering method, [k-means](https://en.wikipedia.org/wiki/K-means_clustering), with options for choosing the initial centroids (e.g. random and kmeans++). Users will be able to find clusters in their data, label new data, and observe the clustering results.
 
@@ -47,4 +47,4 @@ Similar packages:
 - [kmeans in the stats package](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kmeans.html)
 - [flexclust](https://cran.r-project.org/web/packages/flexclust/flexclust.pdf)
 
-`ssg_kmeansr` is intended to help understand the fundamentals of k-means and variants. Contributors are encouraged to build advanced features on top of this base k-means package.
+`ssgkmeansr` is intended to help understand the fundamentals of k-means and variants. Contributors are encouraged to build advanced features on top of this base k-means package.
