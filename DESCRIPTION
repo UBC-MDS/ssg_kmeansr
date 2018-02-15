@@ -1,9 +1,15 @@
-Package: kmeansr
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Package: ssgkmeansr
+Title: An R package for k-means clustering
+Version: 1.0
+Authors@R: c(
+  person("Susan", "Fung", email = "susanfung2018@alumni.ubc.ca", role = c("aut", "cre"s),
+  person("Sophia", "Wang", email = "xiaosophiameng@alumni.ubc.ca", role = c("aut", "cre"s),
+  person("Guanchen", "Zhang", email = "Guanchen.zhang@alumni.ubc.ca", role = c("aut", "cre"s)
+  )
+Description: This package implements the classical unsupervised clustering method, k-means,
+  with options for choosing the initial centroids (e.g. random and kmeans++). Users will be able to
+  find clusters in their data, label new data, and observe the clustering results.
 Depends: R (>= 3.4.1)
-License: What license is it under?
+License: MIT
 Encoding: UTF-8
 LazyData: true
