@@ -2,11 +2,11 @@
 
 ### Summary
 
-This code of conduct demonstrates expectations for participation in ssg_kmeansr open source and how to report unacceptable behaviours. We are aiming to provide a welcoming and encouraging experience for all parties. People violating this Code of Conduct may be excluded from the open source practice. 
+This code of conduct demonstrates expectations for participation in ssgkmeansr open source and how to report unacceptable behaviours. We are aiming to provide a welcoming and encouraging experience for all parties. People violating this Code of Conduct may be excluded from the open source practice. 
 
 ### What we encourage 
 
-As contributors and administrators of this open source, we encourage all parties to contribute by, and not limited to, raising issues, initiating feature requests, updating documentations, pulling requests and other proper behaviours subject to [Contributing to ssg_kmeansr](https://github.com/UBC-MDS/ssg_kmeansr/blob/master/CONTRIBUTING.md). 
+As contributors and administrators of this open source, we encourage all parties to contribute by, and not limited to, raising issues, initiating feature requests, updating documentations, pulling requests and other proper behaviours subject to [Contributing to ssgkmeansr](https://github.com/UBC-MDS/ssgkmeansr/blob/master/CONTRIBUTING.md). 
 
 
 We are committed to making the environment throughout this open source kind, inclusive and harassment-free. We respect all parties involved regardless of gender, age, race, religion, sexual orientation, personal appearance and other personal traits.  
@@ -25,7 +25,7 @@ As the administrators and maintainers of this open source, we have the right and
 
 ### License
 
-To the extent possible under law, the `ssg_kmeansr` team has waived all copyright and related or neighboring rights to `ssg_kmeansr` Code of Conduct.
+To the extent possible under law, the `ssgkmeansr` team has waived all copyright and related or neighboring rights to `ssgkmeansr` Code of Conduct.
 
 
 
