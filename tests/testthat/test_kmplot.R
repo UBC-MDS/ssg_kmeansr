@@ -2,11 +2,23 @@
 
 context("Testing kmplot function")
 
-# standard_deviation
-test_that("state what the test is doing here", {
+test_that("Plot mapping match expectations", {
+  # load test data
+  data <- read_csv('../../data/sample_train.csv')
+  p <- kmplot(data)
   # expected outputs:
-  # expect_equal(round(standard_deviation(c(1,2,3)),5), 0.8165)
+  expect_equal(toString(p$mapping$x), 'x1')
+  expect_equal(toString(p$mapping$y), 'x2')
+  expect_equal(toString(p$layers[[1]]$mapping$colour), 'cluster')
   
   # expected errors:
-  # expect_error(standard_deviation(c()), "Zero")
+  # expect_error(p, 'Unknown error in plot')
+})
+
+test_that('Check data integrity', {
+  data <- read_csv('../../data/sample_train.csv')
+  p <- kmplot(data)
+  
+  # check if any data is dropped in the plot
+  expect_equal(length(p$data$cluster), nrow(data))
 })
