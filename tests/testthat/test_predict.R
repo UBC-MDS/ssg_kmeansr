@@ -1,12 +1,21 @@
 # test functions for ssgkmeansr
 
-context("Testing predict function")
+context("Testing kmpredict function")
 
-# standard_deviation
-test_that("state what the test is doing here", {
-  # expected outputs:
-  # expect_equal(round(standard_deviation(c(1,2,3)),5), 0.8165)
+test_that("Predicting results match expectations", {
+	
+  # load test data
   
-  # expected errors:
-  # expect_error(standard_deviation(c()), "Zero")
+  test_data <- read_csv('../../data/sample_test.csv')
+  n <-n_row(test_data)
+  
+  output <- kmpredict(test_data,3,"random")
+  
+  # expected outputs:
+  expect_equal(length(output[-1]),n ) 
+  expect_equal(output[-1]<4, TRUE)
+  expect_equal(is.data.frame(output[1]), TRUE)
+  expect_equal(typeof(output[2]), "double")
+  expect_equal(is.data.frame(output[3]), TRUE)
+  
 })
