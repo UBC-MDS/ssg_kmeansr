@@ -1,12 +1,18 @@
-# test functions for ssgkmeansr
+# fit
 
 context("Testing fit function")
 
-# standard_deviation
-test_that("state what the test is doing here", {
-  # expected outputs:
-  # expect_equal(round(standard_deviation(c(1,2,3)),5), 0.8165)
+test_that("Check data integrity", {
+  # Load test data
+  data <- read_csv('../../data/sample_test.csv')
+  result <- fit(data,3,"random")
   
-  # expected errors:
-  # expect_error(standard_deviation(c()), "Zero")
+  # Expected outputs:
+  expect_equal(typeof(result), "list")
+  expect_equal(length(result), 3)
+  expect_equal(is.data.frame(result[1]), TRUE)
+  expect_equal(typeof(result[2]), "double")
+  expect_equal(result[2]>0, TRUE)
+  expect_equal(is.data.frame(result[3]), TRUE)
+  
 })
