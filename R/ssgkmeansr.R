@@ -39,7 +39,7 @@ fit <- function(data, k, method) {
 #' @param data A to-be-predicted new dataframe with attributes as columns and data points as rows. Data without cluster labels
 #' @param  kmeans model from fit function; a data frame of centroids
 
-#' @return List containing:1. data frame of the attributes；2.clustering label for each data point
+#' @return dataframe containing new data and clustering lable for each data point
 #' @export
 #'
 #' @examples
