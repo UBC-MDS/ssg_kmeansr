@@ -117,7 +117,7 @@ fit <- function (data, K, method='random') {
   
   data_with_labels <- tibble(x1 = data$x1,
                              x2 = data$x2,
-                             clusters = labels)
+                             cluster = labels)
   withinSS <- 0
   for (k in 1:K) {
     withinSS <- withinSS + calcWitinSS(data_in_clust[[k]], centroids[k,])
@@ -138,5 +138,5 @@ data_fit <- fit(data, K, 'random')
 
 data_fit$data %>%
   ggplot(aes(x1, x2)) +
-    geom_point(aes(color = as.factor(clusters))) +
-    scale_color_discrete('clusters')
+    geom_point(aes(color = as.factor(cluster))) +
+    scale_color_discrete('cluster')
