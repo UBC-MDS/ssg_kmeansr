@@ -1,0 +1,30 @@
+---
+title: "Compute K-means Clustering"
+author: "Sophia Wang, Susan Fung, Guanchen Zhang"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Description
+Build clusters and save cluster attributes with random selection or k-means ++ centroid initialization. Returns a list containing: 
+  1. data frame of the attributes and clustering for each data point; 
+  2. total within cluster sum of square; 
+  3. data frame of k centroids.
+
+## Usage
+`fit(data, K, method)` 
+
+## Arguments
+`data`    Data frame. Attributes as columns and data points as rows
+`k`       Intger. Number of clusters.
+`method`  String. Centroid initialization method. `random` or `kmpp`
+
+## Examples
+`fit(my_data_frame,3,"kmpp")`
+
+## Details
+This package implements the classical unsupervised clustering method, [k-means](https://en.wikipedia.org/wiki/K-means_clustering), with options for choosing the initial centroids (e.g. random and kmeans++). Users will be able to find clusters in their data, label new data, and observe the clustering results.

@@ -1,0 +1,26 @@
+---
+title: "Predict K-means Clustering"
+author: "Sophia Wang, Susan Fung, Guanchen Zhang"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Description
+Predict k-means clustering; provide labels for all observations. Returns data frame containing new data and clustering label for each data point
+
+## Usage
+`predict(data, centroids)`
+
+## Arguments
+`data`      Data frame. Attributes as columns and data points as rows. Data without cluster labels
+`centroids` Data frame containing centroids
+
+## Example
+`predict(test_data, tibble(c(1,2), c(2,3)))`
+
+## Details
+This package implements the classical unsupervised clustering method, [k-means](https://en.wikipedia.org/wiki/K-means_clustering), with options for choosing the initial centroids (e.g. random and kmeans++). Users will be able to find clusters in their data, label new data, and observe the clustering results.
