@@ -38,7 +38,7 @@ test_that("Predicting results match expectations", {
 
 test_that('Error in input data', {
   # expected error:
-  expect_error(kmplot(data_bad_string), 'Input data must be numeric')
-  expect_error(kmplot(data_bad_1d), 'Input data must have 2 columns')
-  expect_error(kmplot(data_bad_empty), 'Input data cannot be empty')
+  expect_error(predict(data_bad_string), 'Input data must be numeric')
+  expect_error(predict(data_bad_1d), 'Input data must have 2 columns')
+  expect_error(predict(data_bad_empty), 'Input data cannot be empty')
 })
