@@ -12,7 +12,7 @@ data_bad_string[2,1]<-"GC"
 data_bad_string[3,2] <-"sophia"
 
 # Bad input - data frame with wrong dimentions
-data_bad_2d<-data_good[, c(2,3)]
+data_bad_1d<-data_good[,2]
 
 # Bad input - empty data frame
 data_bad_empty <- data.frame()
@@ -39,6 +39,6 @@ test_that("Predicting results match expectations", {
 test_that('Error in input data', {
   # expected error:
   expect_error(kmplot(data_bad_string), 'Input data must be numeric')
-  expect_error(kmplot(data_bad_2d), 'Input data must have 3 columns')
+  expect_error(kmplot(data_bad_1d), 'Input data must have 2 columns')
   expect_error(kmplot(data_bad_empty), 'Input data cannot be empty')
 })
