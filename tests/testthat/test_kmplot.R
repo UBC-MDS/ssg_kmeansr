@@ -34,7 +34,7 @@ test_that('Check data integrity', {
   p <- kmplot(data_good)
   # expected outputs:
   # check if any data is dropped in the plot
-  expect_equal(length(p$data$cluster), nrow(data))
+  expect_equal(length(p$data$cluster), nrow(data_good))
 })
 
 test_that('Error in input data', {
