@@ -17,27 +17,6 @@ data_bad_1d<-data_good[,2]
 # Bad input - empty data frame
 data_bad_empty <- data.frame()
 
-
-library(tidyverse)
-# Generate test data frame
-# Read in correct data frame
-data_good <- read.csv('../../data/sample_test.csv')
-
-# Bad input - data frame with stings
-data_bad_string<-data_good
-data_bad_string[1,1]<-"susan"
-data_bad_string[2,1]<-"GC"
-data_bad_string[3,2] <-"sophia"
-
-# Bad input - data frame with wrong dimentions
-data_bad_1d<-data_good[,2]
-
-# Bad input - empty data frame
-data_bad_empty <- data.frame()
-
-
-context("Testing predict function")
-
 test_that("Predicting results match expectations", {
   
   n <-nrow(data_good)
