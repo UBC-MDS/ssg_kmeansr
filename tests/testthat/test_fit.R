@@ -1,13 +1,25 @@
-# fit
-
 context("Testing fit function")
 
-# Load test data
-data <- read_csv('../../data/sample_test.csv')
+library(tidyverse)
+# Generate test data frame
+# Read in correct data frame
+data_good <- read.csv('../../data/sample_test.csv')
+
+# Bad input - data frame with stings
+data_bad_string<-data_good
+data_bad_string[1,1]<-"susan"
+data_bad_string[2,1]<-"GC"
+data_bad_string[3,2] <-"sophia"
+
+# Bad input - data frame with wrong dimentions
+data_bad_1d<-data_good[,2]
+
+# Bad input - empty data frame
+data_bad_empty <- data.frame()
 
 test_that("Check data integrity", {
   
-  result <- fit(data, 3, "kmpp")
+  result <- fit(data_good, 3, "kmpp")
   
   # Expected outputs:
   expect_equal(typeof(result), "list")
@@ -17,4 +29,11 @@ test_that("Check data integrity", {
   expect_equal(result[[2]]>0, TRUE)
   expect_equal(is.data.frame(result[[3]]), TRUE)
   
+})
+
+test_that('Error in input data', {
+  # expected error:
+  expect_error(fit(data_bad_string), 'Input data must be numeric')
+  expect_error(fit(data_bad_1d), 'Input data must have 2 columns')
+  expect_error(fit(data_bad_empty), 'Input data cannot be empty')
 })

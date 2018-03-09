@@ -4,20 +4,20 @@
 \alias{fit}
 \title{Compute k-means clustering}
 \usage{
-fit(data, k, method)
+fit(data, K, method)
 }
 \arguments{
 \item{data}{A data frame with attributes as columns and data points as rows}
 
-\item{k}{Number of clusters}
-
 \item{method}{Centroid initialization method. `random` or `kmpp``}
+
+\item{k}{Number of clusters}
 }
 \value{
-List cointaining 1. data frame of the attributes and clustering for each data point 2.total within cluster sum of square and 3. data frame of k centroids
+List containing: 1. data frame of the attributes and clustering for each data point; 2.total within cluster sum of square; 3. data frame of k centroids
 }
 \description{
-Build clusters and save cluster attributes with random selection or k-means ++  centroid initialization
+Build clusters and save cluster attributes with random selection or k-means ++ centroid initialization
 }
 \examples{
 fit(my_data_frame,3,"kmpp")
