@@ -9,7 +9,6 @@ library(tidyverse)
 #' @return Cleaned data in tibble format
 #' @export
 #'
-#' @examples
 input_preprocessing <- function(raw, stage) {
   tryCatch({
     data <- as_tibble(raw)

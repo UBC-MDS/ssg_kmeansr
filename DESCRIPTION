@@ -1,6 +1,6 @@
 Package: ssgkmeansr
 Title: An R package for k-means clustering
-Version: 1.0
+Version: 3.0
 Authors@R: c(
   person("Susan", "Fung", email = "susanfung2018@alumni.ubc.ca", role = c("aut")),
   person("Sophia", "Wang", email = "xiaosophiameng@alumni.ubc.ca", role = c("aut")),

@@ -1,3 +1,5 @@
+context("Testing kmplot function")
+
 # test functions for ssgkmeansr
 
 library(tidyverse)
@@ -16,9 +18,6 @@ data_bad_2d<-data_good[, c(2,3)]
 
 # Bad input - empty data frame
 data_bad_empty <- data.frame()
-
-
-context("Testing kmplot function")
 
 test_that("Plot mapping match expectations", {
   # load test data
