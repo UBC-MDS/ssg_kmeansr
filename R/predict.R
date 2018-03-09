@@ -1,10 +1,6 @@
 ## predict function
 # library(tidyverse)
 
-# euc_dist <- function(p1, p2) {
-#   sqrt(sum((p1 - p2)^2))
-# }
-
 predict <- function(data, centroids) {
   nobs <- nrow(data)  # num of observations
   K <- nrow(centroids)  # number of clusters

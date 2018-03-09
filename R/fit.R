@@ -31,13 +31,13 @@ should_stop <- function(c0, c1, eps) {
 }
 
 # initalize centroids using random or kmpp
-init_cent <- function(method, N, K) {
+init_cent <- function(method, N, K, data) {
   m <- tolower(method)
   if (m %in% c('random', 'rand')) {
     centroids <- sample(1:N, K)
     return(centroids)
   } else if (m %in% c('kmpp', 'km++', 'kp')) {
-    centroids <- sample(1:N, K) # change to kmpp later
+    centroids <- kmpp(data, K)
     return(centroids)
   } else {
     warning('Invalid initialization method. Using default: random.')
@@ -64,11 +64,12 @@ calcWitinSS <- function(data_cluster, centroid) {
 #'         2. Total within cluster sum of square;
 #'         3. Data frame of k centroids
 #' @export
-fit <- function (data, K, method='random') {
+fit <- function (raw, K, method='random') {
+  data <- raw #input_preprocessing(raw, 'fit')
   nobs <- nrow(data)  # number of observations
   
   # initialize centroids as indices of data
-  cent_init <- init_cent(method, nobs, K)
+  cent_init <- init_cent(method, nobs, K, data)
   centroids <- data[cent_init,]  # actual coords
   # distance matrix n by K: distance from each obs to each centroid
   dist_mat <- matrix(
@@ -134,7 +135,7 @@ fit <- function (data, K, method='random') {
 raw <- read_csv('./data/sample_train.csv')
 data <- raw %>% select(x1, x2)
 K <- 3
-data_fit <- fit(data, K, 'random')
+data_fit <- fit(raw=data, K=K, method='kmpp')
 
 data_fit$data %>%
   ggplot(aes(x1, x2)) +
