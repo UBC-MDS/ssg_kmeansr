@@ -188,71 +188,78 @@ calcWitinSS <- function(data_cluster, centroid) {
 #' @examples
 #' fit(my_data_frame,3,"kmpp")
 fit <- function(data, K, method) {
-  data <- input_preprocessing(data, 'fit')
-  nobs <- nrow(data)  # number of observations
+	tryCatch({
+		data_clean <- input_preprocessing(data, 'fit')
+		
+		data <- data_clean
+
+  		nobs <- nrow(data)  # number of observations
   
-  # initialize centroids as indices of data
-  cent_init <- init_cent(method, nobs, K, data)
-  centroids <- data[cent_init,]  # actual coords
-  # distance matrix n by K: distance from each obs to each centroid
-  dist_mat <- matrix(
-    rep(0, nobs * K),
-    nrow = nobs,
-    ncol = K
-  )
-  # cluster labels
-  labels <- rep(0, nobs)
-  eps <- 0
-  n_iter <- 0
+  		# initialize centroids as indices of data
+  		cent_init <- init_cent(method, nobs, K, data)
+  		centroids <- data[cent_init,]  # actual coords
+  		# distance matrix n by K: distance from each obs to each centroid
+  		dist_mat <- matrix(
+    		rep(0, nobs * K),
+    		nrow = nobs,
+    		ncol = K
+  		)
+  		# cluster labels
+  		labels <- rep(0, nobs)
+  		eps <- 0
+  		n_iter <- 0
   
-  stop <- FALSE
-  while (!stop) {
-    # calc distance from each obs to each centroid
-    for (row in 1:nobs) {
-      for (idx_cent in 1:K) {
-        dist_mat[row, idx_cent] <- euc_dist(data[row,], centroids[idx_cent,])
-      }
-      idx_min <- which.min(dist_mat[row,])
-      # assign label based on the min distance
-      labels[row] <- idx_min
-    }
+  		stop <- FALSE
+  		while (!stop) {
+    		# calc distance from each obs to each centroid
+    		for (row in 1:nobs) {
+      		for (idx_cent in 1:K) {
+        		dist_mat[row, idx_cent] <- euc_dist(data[row,], centroids[idx_cent,])
+      		}
+      		idx_min <- which.min(dist_mat[row,])
+      		# assign label based on the min distance
+      		labels[row] <- idx_min
+    		}
     
-    # group data based on labels
-    data_in_clust <- list()
-    # new centroids based on labels
-    centroids_new <- matrix(  # init
-      rep(0, K*2),
-      nrow = K,
-      ncol = 2
-    )
-    for (k in 1:K) {
-      indices <- which(labels == k)
-      data_in_clust[[k]] <- data[indices,]
-      centroids_new[k,] <- find_centroid(data_in_clust[[k]])
-    }
-    if (should_stop(centroids, centroids_new, eps)) {
-      stop <- TRUE
-    }
-    # update centroids
-    centroids <- centroids_new
-    n_iter <- n_iter + 1
-  }
-  print(paste("kmeans converged in", n_iter, "runs."))
+    		# group data based on labels
+    		data_in_clust <- list()
+    		# new centroids based on labels
+    		centroids_new <- matrix(  # init
+      		rep(0, K*2),
+      		nrow = K,
+      		ncol = 2
+    		)
+    		for (k in 1:K) {
+      		indices <- which(labels == k)
+      		data_in_clust[[k]] <- data[indices,]
+      		centroids_new[k,] <- find_centroid(data_in_clust[[k]])
+   		 }
+    		if (should_stop(centroids, centroids_new, eps)) {
+      		stop <- TRUE
+    		}
+    		# update centroids
+    		centroids <- centroids_new
+    		n_iter <- n_iter + 1
+  		}
+  		print(paste("kmeans converged in", n_iter, "runs."))
   
-  data_with_labels <- tibble(x1 = data$x1,
-                             x2 = data$x2,
-                             cluster = labels)
-  withinSS <- 0
-  for (k in 1:K) {
-    withinSS <- withinSS + calcWitinSS(data_in_clust[[k]], centroids[k,])
-  }
+  		data_with_labels <- tibble(x1 = data$x1,
+  									x2 = data$x2,
+                             		cluster = labels)
+  		withinSS <- 0
+  		for (k in 1:K) {
+    		withinSS <- withinSS + calcWitinSS(data_in_clust[[k]], centroids[k,])
+  		}
   
-  return(list(
-    data = data_with_labels,
-    withinSS = withinSS,
-    centroids = as.tibble(centroids)
-  ))
-}
+  		return(list(
+    		data = data_with_labels,
+    		withinSS = withinSS,
+    		centroids = as.tibble(centroids)
+  		))
+		}, error = function(e) {
+			stop(e)
+		})
+	}
 
 
 #' Predict k-means clustering; provide labels for all observations
@@ -266,32 +273,40 @@ fit <- function(data, K, method) {
 #' @examples
 #' predict(test_data, tibble(c(1,2), c(2,3))
 predict <- function(data, centroids) {
+	tryCatch({
+		data_clean <- input_preprocessing(data, 'predict')
+		
+		data <- data_clean %>%
+			mutate(cluster = as.factor(cluster))
+
+				
   
-  data <- input_preprocessing(data, 'fit')
+  		nobs <- nrow(data)  # num of observations
+  		K <- nrow(centroids)  # number of clusters
   
-  nobs <- nrow(data)  # num of observations
-  K <- nrow(centroids)  # number of clusters
+  		# init for calculation
+  		dist_mat <- matrix(
+    		rep(0, nobs * K),
+    		nrow = nobs,
+    		ncol = K
+  		)
+  		labels <- rep(0, nobs)
   
-  # init for calculation
-  dist_mat <- matrix(
-    rep(0, nobs * K),
-    nrow = nobs,
-    ncol = K
-  )
-  labels <- rep(0, nobs)
+  		for (row in 1:nobs) {
+    		for (idx_cent in 1:K) {
+      		dist_mat[row, idx_cent] <- euc_dist(data[row,], centroids[idx_cent,])
+    		}
+    		idx_min <- which.min(dist_mat[row,])
+    		# assign label based on the min distance
+    		labels[row] <- idx_min
+  		}
   
-  for (row in 1:nobs) {
-    for (idx_cent in 1:K) {
-      dist_mat[row, idx_cent] <- euc_dist(data[row,], centroids[idx_cent,])
-    }
-    idx_min <- which.min(dist_mat[row,])
-    # assign label based on the min distance
-    labels[row] <- idx_min
-  }
-  
-  res <- data %>%
-    mutate(cluster = labels)
-  res
+  		res <- data %>%
+    		mutate(cluster = labels)
+  		res
+}, error = function(e) {
+	stop(e)
+})
 }
 
 
