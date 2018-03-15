@@ -36,17 +36,25 @@ input_preprocessing <- function(raw, stage) {
   }
   
   # change column names
-  if (stage == 'fit') {
-    colnames(data) <- c('x1', 'x2')
-  } else if (stage == 'predict') {
-    colnames(data) <- c('x1', 'x2', 'cluster')
-  }
+  tryCatch({
+    if (stage == 'fit') {
+      colnames(data) <- c('x1', 'x2')
+    } else if (stage == 'predict') {
+      colnames(data) <- c('x1', 'x2', 'cluster')
+    }
+  }, error = function(e) {
+    stop('Failed to assign column names.')  
+  })
   
   # change cluster column to factor type
   if (stage != 'fit' & ncol(data) == 3) {
-    data <- data %>% mutate(
-      cluster = as.factor(cluster)
-    )
+    tryCatch({
+      data <- data %>% mutate(
+        cluster = as.factor(cluster)
+      )
+    }, error = function(e) {
+      stop('Failed to convert cluster label to factor.')
+    })
   }
   
   return(data)
@@ -54,15 +62,23 @@ input_preprocessing <- function(raw, stage) {
 
 # Euclidean distance between any two points
 euc_dist <- function(p1, p2) {
-  sqrt(sum((p1 - p2)^2))
+  tryCatch({
+    sqrt(sum((p1 - p2)^2))
+  }, error = function(e) {
+    stop('Error in calculating the Euclidean distance.')
+  })
 }
 
 # Find the centroid of a cluster
 find_centroid <- function(dat) {
-  mat <- as.matrix(dat)
-  x1 <- mean(mat[,1])
-  x2 <- mean(mat[,2])
-  c(x1, x2)
+  tryCatch({
+    mat <- as.matrix(dat)
+    x1 <- mean(mat[,1])
+    x2 <- mean(mat[,2])
+    c(x1, x2)
+  }, error = function(e) {
+    stop('Failed to get the centroid from the cluster.')
+  })
 }
 
 # Check if converged
@@ -82,11 +98,14 @@ should_stop <- function(c0, c1, eps) {
 
 #' Find the initial centroids using the kmeans++ approach
 #' 
+#' @param data The input data
 #' @param K The number of clusters
 #' @return The indices of the centroids in the input data
 #' @note This function is not optimized for performance or efficiency
 kmpp <- function(data, K) {
   num_obs <- nrow(data)
+  
+  if (num_obs <= 0) stop('Invalid input: empty data.')
   
   # sample the first centroid and add it to vector
   idx0 <- sample(1:num_obs, 1)
@@ -100,24 +119,32 @@ kmpp <- function(data, K) {
   
   # dist from a point to its nearest centroid
   get_dist <- Vectorize(function(x1, x2) {
-    d <- c()  # distance vector
-    # calc distance to all centroids in the vector
-    for (cent in centroids) {
-      tmp <- euc_dist(c(x1, x2), data[cent,])
-      d <- c(d, tmp)
-    }
-    min(d)
+    tryCatch({
+      d <- c()  # distance vector
+      # calc distance to all centroids in the vector
+      for (cent in centroids) {
+        tmp <- euc_dist(c(x1, x2), data[cent,])
+        d <- c(d, tmp)
+      }
+      min(d)
+    }, error = function(e) {
+      stop('Failed to calculate the distance to centroid.')
+    })
   })
   
   # find which cluster a point belongs to
   get_clust <- Vectorize(function(x1, x2) {
-    d <- c()
-    for (cent in centroids) {
-      tmp <- euc_dist(c(x1, x2), data[cent,])
-      d <- c(d, tmp)
-    }
-    # use index as the cluster label
-    which.min(d)
+    tryCatch({
+      d <- c()
+      for (cent in centroids) {
+        tmp <- euc_dist(c(x1, x2), data[cent,])
+        d <- c(d, tmp)
+      }
+      # use index as the cluster label
+      which.min(d)
+    }, error = function(e) {
+      stop('Failed to assign cluster label.')
+    })
   })
   
   for (i in 1:K) {
@@ -169,6 +196,9 @@ calcWitinSS <- function(data_cluster, centroid) {
   for (j in 1:nrow(data_cluster)) {
     wss <- wss + euc_dist(data_cluster[j,], centroid)
   }
+  if (wss < 0) {
+    warning('The total within cluster sum of squared error is less than 0.')
+  }
   wss
 }
 
@@ -186,7 +216,11 @@ calcWitinSS <- function(data_cluster, centroid) {
 #'
 #' @examples
 #' fit(my_data_frame,3,"kmpp")
-fit <- function(data, K, method) {
+fit <- function(data, K, method='random') {
+  if (K < 1 | K > nrow(data)) {
+    stop('Invalid number of clusters. K must be larger than 1 
+         and smaller than the number of rows in the data.')
+  }
   data <- input_preprocessing(data, 'fit')
   nobs <- nrow(data)  # number of observations
   
@@ -315,6 +349,8 @@ kmplot <- function(dat) {
       ggplot(aes(x1, x2)) +
         geom_point(aes(color = cluster)) +
         scale_color_discrete('cluster') +
+        scale_x_continuous('x1') +
+        scale_y_continuous('x2') +
         theme_bw()
     
     return(fig)
