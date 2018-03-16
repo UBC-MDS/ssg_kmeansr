@@ -60,7 +60,16 @@ input_preprocessing <- function(raw, stage) {
   return(data)
 }
 
-# Euclidean distance between any two points
+
+#' Euclidean distance between any two points
+#'
+#' @param p1 First point
+#' @param p2 Second point
+#'
+#' @return number
+#' @export
+#'
+#' @examples
 euc_dist <- function(p1, p2) {
   tryCatch({
     sqrt(sum((p1 - p2)^2))
@@ -69,7 +78,15 @@ euc_dist <- function(p1, p2) {
   })
 }
 
-# Find the centroid of a cluster
+
+#' Find the centroid of a cluster
+#'
+#' @param dat Data points
+#'
+#' @return vector of centroid coordinates
+#' @export
+#'
+#' @examples
 find_centroid <- function(dat) {
   tryCatch({
     mat <- as.matrix(dat)
@@ -81,7 +98,16 @@ find_centroid <- function(dat) {
   })
 }
 
-# Check if converged
+#' Check if converged
+#'
+#' @param c0 Previous centroid
+#' @param c1 New centroid
+#' @param eps Tolerance
+#'
+#' @return bool
+#' @export
+#'
+#' @examples
 should_stop <- function(c0, c1, eps) {
   # c0 as the matrix of prev centroids
   # c1 as the matrix of the new centroids
@@ -174,8 +200,17 @@ kmpp <- function(data, K) {
   centroids
 }
 
-
-# initalize centroids using random or kmpp
+#' initalize centroids using random or kmpp
+#'
+#' @param method Initialization method
+#' @param N Number of data points
+#' @param K Number of clusters
+#' @param data Data points
+#'
+#' @return integer Index of data points
+#' @export
+#'
+#' @examples
 init_cent <- function(method, N, K, data) {
   m <- tolower(method)
   if (m %in% c('random', 'rand')) {
@@ -191,6 +226,15 @@ init_cent <- function(method, N, K, data) {
   }
 }
 
+#' Calculate the total within cluster sum of squared distance
+#'
+#' @param data_cluster Data points in cluster
+#' @param centroid Centroid of the cluster
+#'
+#' @return number
+#' @export
+#'
+#' @examples
 calcWitinSS <- function(data_cluster, centroid) {
   wss <- 0
   for (j in 1:nrow(data_cluster)) {
@@ -208,7 +252,7 @@ calcWitinSS <- function(data_cluster, centroid) {
 #' Build clusters and save cluster attributes with random selection or k-means ++ centroid initialization
 #'
 #' @param data A data frame with attributes as columns and data points as rows
-#' @param k Number of clusters
+#' @param K Number of clusters
 #' @param method Centroid initialization method. `random` or `kmpp``
 #'
 #' @return List containing: 1. data frame of the attributes and clustering for each data point; 2.total within cluster sum of square; 3. data frame of k centroids
