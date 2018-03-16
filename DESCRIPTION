@@ -10,6 +10,8 @@ Description: This package implements the classical unsupervised clustering metho
   with options for choosing the initial centroids (e.g. random and kmeans++). Users will be able to
   find clusters in their data, label new data, and observe the clustering results.
 Depends: R (>= 3.4.1)
+Imports:
+  tidyverse
 License: MIT
 Encoding: UTF-8
 LazyData: true
