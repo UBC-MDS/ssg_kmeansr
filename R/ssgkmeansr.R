@@ -68,8 +68,6 @@ input_preprocessing <- function(raw, stage) {
 #'
 #' @return number
 #' @export
-#'
-#' @examples
 euc_dist <- function(p1, p2) {
   tryCatch({
     sqrt(sum((p1 - p2)^2))
@@ -85,8 +83,6 @@ euc_dist <- function(p1, p2) {
 #'
 #' @return vector of centroid coordinates
 #' @export
-#'
-#' @examples
 find_centroid <- function(dat) {
   tryCatch({
     mat <- as.matrix(dat)
@@ -235,6 +231,7 @@ init_cent <- function(method, N, K, data) {
 #' @export
 #'
 #' @examples
+#' calcWitinSS(data_in_clust[[k]], centroids[k,])
 calcWitinSS <- function(data_cluster, centroid) {
   wss <- 0
   for (j in 1:nrow(data_cluster)) {
@@ -261,12 +258,13 @@ calcWitinSS <- function(data_cluster, centroid) {
 #' @examples
 #' fit(my_data_frame,3,"kmpp")
 fit <- function(data, K, method='random') {
-  if (K < 1 | K > nrow(data)) {
-    stop('Invalid number of clusters. K must be larger than 1 
-         and smaller than the number of rows in the data.')
-  }
   data <- input_preprocessing(data, 'fit')
   nobs <- nrow(data)  # number of observations
+  
+  
+  if (K < 1 | K > nrow(data)) {
+    stop('Invalid number of clusters. K must be larger than 1 and smaller than the number of rows in the data.')
+  }
   
   # initialize centroids as indices of data
   cent_init <- init_cent(method, nobs, K, data)
