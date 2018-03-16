@@ -36,36 +36,78 @@ input_preprocessing <- function(raw, stage) {
   }
   
   # change column names
-  if (stage == 'fit') {
-    colnames(data) <- c('x1', 'x2')
-  } else if (stage == 'predict') {
-    colnames(data) <- c('x1', 'x2', 'cluster')
-  }
+  tryCatch({
+    if (stage == 'fit') {
+      colnames(data) <- c('x1', 'x2')
+    } else if (stage == 'predict') {
+      colnames(data) <- c('x1', 'x2', 'cluster')
+    }
+  }, error = function(e) {
+    stop('Failed to assign column names.')  
+  })
   
   # change cluster column to factor type
   if (stage != 'fit' & ncol(data) == 3) {
-    data <- data %>% mutate(
-      cluster = as.factor(cluster)
-    )
+    tryCatch({
+      data <- data %>% mutate(
+        cluster = as.factor(cluster)
+      )
+    }, error = function(e) {
+      stop('Failed to convert cluster label to factor.')
+    })
   }
   
   return(data)
 }
 
-# Euclidean distance between any two points
+
+#' Euclidean distance between any two points
+#'
+#' @param p1 First point
+#' @param p2 Second point
+#'
+#' @return number
+#' @export
+#'
+#' @examples
 euc_dist <- function(p1, p2) {
-  sqrt(sum((p1 - p2)^2))
+  tryCatch({
+    sqrt(sum((p1 - p2)^2))
+  }, error = function(e) {
+    stop('Error in calculating the Euclidean distance.')
+  })
 }
 
-# Find the centroid of a cluster
+
+#' Find the centroid of a cluster
+#'
+#' @param dat Data points
+#'
+#' @return vector of centroid coordinates
+#' @export
+#'
+#' @examples
 find_centroid <- function(dat) {
-  mat <- as.matrix(dat)
-  x1 <- mean(mat[,1])
-  x2 <- mean(mat[,2])
-  c(x1, x2)
+  tryCatch({
+    mat <- as.matrix(dat)
+    x1 <- mean(mat[,1])
+    x2 <- mean(mat[,2])
+    c(x1, x2)
+  }, error = function(e) {
+    stop('Failed to get the centroid from the cluster.')
+  })
 }
 
-# Check if converged
+#' Check if converged
+#'
+#' @param c0 Previous centroid
+#' @param c1 New centroid
+#' @param eps Tolerance
+#'
+#' @return bool
+#' @export
+#'
+#' @examples
 should_stop <- function(c0, c1, eps) {
   # c0 as the matrix of prev centroids
   # c1 as the matrix of the new centroids
@@ -82,11 +124,14 @@ should_stop <- function(c0, c1, eps) {
 
 #' Find the initial centroids using the kmeans++ approach
 #' 
+#' @param data The input data
 #' @param K The number of clusters
 #' @return The indices of the centroids in the input data
 #' @note This function is not optimized for performance or efficiency
 kmpp <- function(data, K) {
   num_obs <- nrow(data)
+  
+  if (num_obs <= 0) stop('Invalid input: empty data.')
   
   # sample the first centroid and add it to vector
   idx0 <- sample(1:num_obs, 1)
@@ -100,24 +145,32 @@ kmpp <- function(data, K) {
   
   # dist from a point to its nearest centroid
   get_dist <- Vectorize(function(x1, x2) {
-    d <- c()  # distance vector
-    # calc distance to all centroids in the vector
-    for (cent in centroids) {
-      tmp <- euc_dist(c(x1, x2), data[cent,])
-      d <- c(d, tmp)
-    }
-    min(d)
+    tryCatch({
+      d <- c()  # distance vector
+      # calc distance to all centroids in the vector
+      for (cent in centroids) {
+        tmp <- euc_dist(c(x1, x2), data[cent,])
+        d <- c(d, tmp)
+      }
+      min(d)
+    }, error = function(e) {
+      stop('Failed to calculate the distance to centroid.')
+    })
   })
   
   # find which cluster a point belongs to
   get_clust <- Vectorize(function(x1, x2) {
-    d <- c()
-    for (cent in centroids) {
-      tmp <- euc_dist(c(x1, x2), data[cent,])
-      d <- c(d, tmp)
-    }
-    # use index as the cluster label
-    which.min(d)
+    tryCatch({
+      d <- c()
+      for (cent in centroids) {
+        tmp <- euc_dist(c(x1, x2), data[cent,])
+        d <- c(d, tmp)
+      }
+      # use index as the cluster label
+      which.min(d)
+    }, error = function(e) {
+      stop('Failed to assign cluster label.')
+    })
   })
   
   for (i in 1:K) {
@@ -147,8 +200,17 @@ kmpp <- function(data, K) {
   centroids
 }
 
-
-# initalize centroids using random or kmpp
+#' initalize centroids using random or kmpp
+#'
+#' @param method Initialization method
+#' @param N Number of data points
+#' @param K Number of clusters
+#' @param data Data points
+#'
+#' @return integer Index of data points
+#' @export
+#'
+#' @examples
 init_cent <- function(method, N, K, data) {
   m <- tolower(method)
   if (m %in% c('random', 'rand')) {
@@ -164,10 +226,22 @@ init_cent <- function(method, N, K, data) {
   }
 }
 
+#' Calculate the total within cluster sum of squared distance
+#'
+#' @param data_cluster Data points in cluster
+#' @param centroid Centroid of the cluster
+#'
+#' @return number
+#' @export
+#'
+#' @examples
 calcWitinSS <- function(data_cluster, centroid) {
   wss <- 0
   for (j in 1:nrow(data_cluster)) {
     wss <- wss + euc_dist(data_cluster[j,], centroid)
+  }
+  if (wss < 0) {
+    warning('The total within cluster sum of squared error is less than 0.')
   }
   wss
 }
@@ -178,7 +252,7 @@ calcWitinSS <- function(data_cluster, centroid) {
 #' Build clusters and save cluster attributes with random selection or k-means ++ centroid initialization
 #'
 #' @param data A data frame with attributes as columns and data points as rows
-#' @param k Number of clusters
+#' @param K Number of clusters
 #' @param method Centroid initialization method. `random` or `kmpp``
 #'
 #' @return List containing: 1. data frame of the attributes and clustering for each data point; 2.total within cluster sum of square; 3. data frame of k centroids
@@ -186,7 +260,11 @@ calcWitinSS <- function(data_cluster, centroid) {
 #'
 #' @examples
 #' fit(my_data_frame,3,"kmpp")
-fit <- function(data, K, method) {
+fit <- function(data, K, method='random') {
+  if (K < 1 | K > nrow(data)) {
+    stop('Invalid number of clusters. K must be larger than 1 
+         and smaller than the number of rows in the data.')
+  }
   data <- input_preprocessing(data, 'fit')
   nobs <- nrow(data)  # number of observations
   
@@ -315,6 +393,8 @@ kmplot <- function(dat) {
       ggplot(aes(x1, x2)) +
         geom_point(aes(color = cluster)) +
         scale_color_discrete('cluster') +
+        scale_x_continuous('x1') +
+        scale_y_continuous('x2') +
         theme_bw()
     
     return(fig)
