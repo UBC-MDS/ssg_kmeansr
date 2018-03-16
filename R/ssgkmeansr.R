@@ -1,5 +1,6 @@
 # ssgkmeansr
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 
 #' Convert raw input data to data frame
 #'
@@ -102,8 +103,6 @@ find_centroid <- function(dat) {
 #'
 #' @return bool
 #' @export
-#'
-#' @examples
 should_stop <- function(c0, c1, eps) {
   # c0 as the matrix of prev centroids
   # c1 as the matrix of the new centroids
@@ -205,8 +204,6 @@ kmpp <- function(data, K) {
 #'
 #' @return integer Index of data points
 #' @export
-#'
-#' @examples
 init_cent <- function(method, N, K, data) {
   m <- tolower(method)
   if (m %in% c('random', 'rand')) {
@@ -229,9 +226,6 @@ init_cent <- function(method, N, K, data) {
 #'
 #' @return number
 #' @export
-#'
-#' @examples
-#' calcWitinSS(data_in_clust[[k]], centroids[k,])
 calcWitinSS <- function(data_cluster, centroid) {
   wss <- 0
   for (j in 1:nrow(data_cluster)) {

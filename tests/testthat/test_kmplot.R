@@ -1,8 +1,5 @@
 context("Testing kmplot function")
 
-# test functions for ssgkmeansr
-
-library(tidyverse)
 # Generate test data frame
 # Read in correct data frame
 data_good <- read.csv('../../data/sample_train.csv')
