@@ -11,6 +11,7 @@ Description: This package implements the classical unsupervised clustering metho
   find clusters in their data, label new data, and observe the clustering results.
 Depends: R (>= 3.4.1)
 Imports:
+  magrittr,
   dplyr,
   ggplot2
 License: MIT

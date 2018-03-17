@@ -6,7 +6,7 @@ var <- .15
 feature_one <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
 feature_two <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
 
-data_good <- data_frame(x1 = feature_one,
+data_good <- data.frame(x1 = feature_one,
                         x2 = feature_two)
 
 # Bad input - data frame with stings
@@ -29,9 +29,10 @@ test_that("Predicting results match expectations", {
   output <- predict(data_good, centroids)
   
   # expected outputs:
-  expect_equal(nrow(output[,ncol(data_good)]), n) 
-  expect_equal(max(output[,ncol(data_good)])<4, TRUE)
+  expect_equal(nrow(output), n) 
+  expect_equal(max(output[,3])<4, TRUE)
   expect_equal(is.data.frame(output), TRUE)
+  
   
 })
 

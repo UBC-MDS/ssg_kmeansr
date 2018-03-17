@@ -12,7 +12,7 @@ input_preprocessing(raw, stage)
 \item{stage}{`fit` or `predict`}
 }
 \value{
-Cleaned data in tibble format
+Cleaned data in data frame format
 }
 \description{
 Convert raw input data to data frame

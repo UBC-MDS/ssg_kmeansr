@@ -1,4 +1,5 @@
 # ssgkmeansr
+library(magrittr)
 library(dplyr)
 library(ggplot2)
 
@@ -7,12 +8,12 @@ library(ggplot2)
 #' @param raw Raw input
 #' @param stage `fit` or `predict`
 #'
-#' @return Cleaned data in tibble format
+#' @return Cleaned data in data frame format
 #' @export
 #'
 input_preprocessing <- function(raw, stage) {
   tryCatch({
-    data <- as_tibble(raw)
+    data <- as.data.frame(raw)
   }, error = function(e) {
     stop('Failed to convert data to data frame.')
   })
@@ -133,7 +134,7 @@ kmpp <- function(data, K) {
   centroids <- c()
   centroids <- c(centroids, idx0)  # as indices
   
-  df <- tibble(
+  df <- data.frame(
     x1 = unlist(data[,1]),
     x2 = unlist(data[,2])
   )
@@ -305,9 +306,9 @@ fit <- function(data, K, method='random') {
   }
   print(paste("kmeans converged in", n_iter, "runs."))
   
-  data_with_labels <- tibble(x1 = data$x1,
-                             x2 = data$x2,
-                             cluster = labels)
+  data_with_labels <- data.frame(x1 = data$x1,
+                                 x2 = data$x2,
+                                 cluster = labels)
   withinSS <- 0
   for (k in 1:K) {
     withinSS <- withinSS + calcWitinSS(data_in_clust[[k]], centroids[k,])
