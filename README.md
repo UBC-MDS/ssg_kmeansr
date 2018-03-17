@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/UBC-MDS/ssgkmeansr.svg?branch=master)](https://travis-ci.org/UBC-MDS/ssgkmeansr)
+
 # ssgkmeansr
 
 An R package for k-means clustering.
@@ -27,18 +29,40 @@ Outputs related to performance (within cluster sum of squared distance) is part 
 
 The package includes two datasets for testing and demonstration.
 
-## Examples
-```
-cluster < - fit(data = my_data_frame, k = 3, method = "kmpp")
-result <- predict(data = new_data_frame, centroids = cluster[3])
-kmplot(data = result)
-```
-
 ## Installing the Package
 
 Run the following command in R:
 
 `devtools::install_github("UBC-MDS/ssgkmeansr")`
+
+## Examples
+```
+# Generate test data frames
+set.seed(46)
+var <- .15
+feature_one <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
+feature_two <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
+
+data_train<- data_frame(x1 = feature_one,
+                        x2 = feature_two)
+
+set.seed(1)
+var <- .1
+feature_one <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
+feature_two <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
+
+data_test <- data_frame(x1 = feature_one,
+                        x2 = feature_two)
+
+# Build clusters
+cluster <- fit(data = data_train, K = 3, method = "kmpp")
+
+# predict the label of new data based on the cluster attributes
+result <- predict(data = data_test, centroids = cluster[[3]])
+
+# Plot scatterplot for new data with cluster labels
+kmplot(dat = result)
+```
 
 ## Ecosystem
 
