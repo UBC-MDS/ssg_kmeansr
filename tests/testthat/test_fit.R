@@ -6,7 +6,7 @@ var <- .15
 feature_one <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
 feature_two <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
 
-data_good <- data_frame(x1 = feature_one,
+data_good <- data.frame(x1 = feature_one,
                         x2 = feature_two)
 
 # Bad input - data frame with stings
