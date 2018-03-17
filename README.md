@@ -36,31 +36,36 @@ Run the following command in R:
 `devtools::install_github("UBC-MDS/ssgkmeansr")`
 
 ## Examples
-```
-# Generate test data frames
-set.seed(46)
-var <- .15
-feature_one <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
-feature_two <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
+```r
+library(ssgkmeansr)
 
-data_train<- data_frame(x1 = feature_one,
+# Generating training data
+set.seed(46)
+var <- .5
+N <- 100
+feature_one <- c(rnorm(N,-1, var),rnorm(N,0, var),rnorm(N,1, var))
+feature_two <- c(rnorm(N,-1, var),rnorm(N,0, var),rnorm(N,1, var))
+
+data_train<- data.frame(x1 = feature_one,
                         x2 = feature_two)
 
+# Generating test data
 set.seed(1)
 var <- .1
-feature_one <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
-feature_two <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
+feature_one <- c(rnorm(N,-1, var),rnorm(N,0, var),rnorm(N,1, var))
+feature_two <- c(rnorm(N,-1, var),rnorm(N,0, var),rnorm(N,1, var))
 
-data_test <- data_frame(x1 = feature_one,
+data_test <- data.frame(x1 = feature_one,
                         x2 = feature_two)
 
-# Build clusters
-cluster <- fit(data = data_train, K = 3, method = "kmpp")
+# training
+cluster <- fit(data = data_train, K = 3, method = "kmpp") # using kmeans++
+kmplot(cluster$data)  # plot training results
+cluster$centroids     # show centroids
+cluster$withinSS      # show within cluster sum of squared distance
 
-# predict the label of new data based on the cluster attributes
+# predicting
 result <- predict(data = data_test, centroids = cluster[[3]])
-
-# Plot scatterplot for new data with cluster labels
 kmplot(dat = result)
 ```
 
