@@ -316,7 +316,7 @@ fit <- function(data, K, method='random') {
   return(list(
     data = data_with_labels,
     withinSS = withinSS,
-    centroids = as.tibble(centroids)
+    centroids = as.data.frame(centroids,row.names=NULL)
   ))
 }
 

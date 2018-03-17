@@ -7,6 +7,8 @@
 kmpp(data, K)
 }
 \arguments{
+\item{data}{The input data}
+
 \item{K}{The number of clusters}
 }
 \value{

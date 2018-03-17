@@ -1,6 +1,6 @@
 Package: ssgkmeansr
 Title: An R package for k-means clustering
-Version: 3.0
+Version: 4.0
 Authors@R: c(
   person("Susan", "Fung", email = "susanfung2018@alumni.ubc.ca", role = c("aut")),
   person("Sophia", "Wang", email = "xiaosophiameng@alumni.ubc.ca", role = c("aut")),
@@ -11,12 +11,14 @@ Description: This package implements the classical unsupervised clustering metho
   find clusters in their data, label new data, and observe the clustering results.
 Depends: R (>= 3.4.1)
 Imports:
-  tidyverse
+  dplyr,
+  ggplot2
 License: MIT
 Encoding: UTF-8
 LazyData: true
-Suggests: testthat,
+Suggests:
     knitr,
+    testthat,
     rmarkdown
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr

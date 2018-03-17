@@ -9,7 +9,7 @@ input_preprocessing(raw, stage)
 \arguments{
 \item{raw}{Raw input}
 
-\item{stage}{`fit` or `predict``}
+\item{stage}{`fit` or `predict`}
 }
 \value{
 Cleaned data in tibble format

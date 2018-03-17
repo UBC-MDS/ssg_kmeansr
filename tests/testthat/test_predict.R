@@ -24,7 +24,7 @@ data_bad_empty <- data.frame()
 test_that("Predicting results match expectations", {
   
   n <-nrow(data_good)
-  centroids <- as.tibble(rbind(c(0,0),c(1,1),c(-1,-1)))
+  centroids <- as.data.frame(rbind(c(0,0),c(1,1),c(-1,-1)),row.names = NULL)
 
   output <- predict(data_good, centroids)
   

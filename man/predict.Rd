@@ -17,6 +17,3 @@ Dataframe containing new data and clustering label for each data point
 \description{
 Predict k-means clustering; provide labels for all observations
 }
-\examples{
-predict(test_data, tibble(c(1,2), c(2,3))
-}
