@@ -5,7 +5,7 @@ library(ggplot2)
 #' Convert raw input data to data frame
 #'
 #' @param raw Raw input
-#' @param stage `fit` or `predict``
+#' @param stage `fit` or `predict`
 #'
 #' @return Cleaned data in tibble format
 #' @export
@@ -244,13 +244,10 @@ calcWitinSS <- function(data_cluster, centroid) {
 #'
 #' @param data A data frame with attributes as columns and data points as rows
 #' @param K Number of clusters
-#' @param method Centroid initialization method. `random` or `kmpp``
+#' @param method Centroid initialization method. `random` or `kmpp`
 #'
 #' @return List containing: 1. data frame of the attributes and clustering for each data point; 2.total within cluster sum of square; 3. data frame of k centroids
 #' @export
-#'
-#' @examples
-#' fit(my_data_frame,3,"kmpp")
 fit <- function(data, K, method='random') {
   data <- input_preprocessing(data, 'fit')
   nobs <- nrow(data)  # number of observations
@@ -331,9 +328,6 @@ fit <- function(data, K, method='random') {
 
 #' @return Dataframe containing new data and clustering label for each data point
 #' @export
-#'
-#' @examples
-#' predict(test_data, tibble(c(1,2), c(2,3))
 predict <- function(data, centroids) {
   
   data <- input_preprocessing(data, 'fit')
@@ -370,10 +364,6 @@ predict <- function(data, centroids) {
 #'
 #' @return ggplot object
 #' @export
-#'
-#' @examples
-#' data <- tibble(x1=c(1,2,10), x2=c(1,3,10), cluster=c(1,1,2))
-#' fig <- kmplot(data)
 kmplot <- function(dat) {
   tryCatch({
     data_clean<-input_preprocessing(dat,"plot")
