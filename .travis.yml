@@ -1,1 +1,4 @@
+warnings_are_errors: FALSE
 language: r
+sudo: FALSE
+cache: packages

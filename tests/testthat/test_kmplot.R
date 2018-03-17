@@ -1,11 +1,15 @@
 context("Testing kmplot function")
 
-# test functions for ssgkmeansr
-
-library(tidyverse)
 # Generate test data frame
-# Read in correct data frame
-data_good <- read.csv('../../data/sample_train.csv')
+set.seed(46)
+var <- .15
+feature_one <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
+feature_two <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
+cluster<-c(rep(1,5), rep(2,5), rep(3,5))
+
+data_good <- data_frame(x1 = feature_one,
+                        x2 = feature_two,
+                        cluster = cluster)
 
 # Bad input - data frame with stings
 data_bad_string<-data_good

@@ -1,9 +1,13 @@
 context("Testing predict function")
 
-library(tidyverse)
 # Generate test data frame
-# Read in correct data frame
-data_good <- read.csv('../../data/sample_test.csv')
+set.seed(46)
+var <- .15
+feature_one <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
+feature_two <- c(rnorm(5,-1, var),rnorm(5,0, var),rnorm(5,1, var))
+
+data_good <- data_frame(x1 = feature_one,
+                        x2 = feature_two)
 
 # Bad input - data frame with stings
 data_bad_string<-data_good
@@ -20,7 +24,7 @@ data_bad_empty <- data.frame()
 test_that("Predicting results match expectations", {
   
   n <-nrow(data_good)
-  centroids <- as.tibble(rbind(c(0,0),c(1,1),c(-1,-1)))
+  centroids <- as.data.frame(rbind(c(0,0),c(1,1),c(-1,-1)),row.names = NULL)
 
   output <- predict(data_good, centroids)
   
